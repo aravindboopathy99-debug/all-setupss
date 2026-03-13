@@ -1,14 +1,16 @@
 sudo apt update -y
-sudo apt install wget openjdk-17-jdk -y
+sudo apt install -y wget openjdk-17-jdk
 
-sudo mkdir /app
+sudo mkdir -p /app
 cd /app
 
-sudo wget -O nexus.tar.gz https://download.sonatype.com/nexus/3/latest-unix.tar.gz
-sudo tar -xvf nexus.tar.gz
+sudo rm -rf nexus sonatype-work nexus.tar.gz latest-unix.tar.gz
+
+sudo wget https://download.sonatype.com/nexus/3/latest-unix.tar.gz
+sudo tar -xvzf latest-unix.tar.gz
 sudo mv nexus-3* nexus
 
-sudo adduser --system --no-create-home nexus
+sudo adduser --system --no-create-home --group nexus || true
 
 sudo chown -R nexus:nexus /app/nexus
 sudo chown -R nexus:nexus /app/sonatype-work
@@ -27,11 +29,13 @@ User=nexus
 Group=nexus
 ExecStart=/app/nexus/bin/nexus start
 ExecStop=/app/nexus/bin/nexus stop
-Restart=on-abort
+Restart=on-failure
 
 [Install]
 WantedBy=multi-user.target
 EOL
+
+sudo chmod +x /app/nexus/bin/nexus
 
 sudo systemctl daemon-reload
 sudo systemctl enable nexus
