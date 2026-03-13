@@ -1,7 +1,7 @@
 sudo apt update -y
 sudo apt install openjdk-17-jdk -y
 
-wget https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.98/bin/apache-tomcat-9.0.98.tar.gz
+wget https://archive.apache.org/dist/tomcat/tomcat-9/v9.0.98/bin/apache-tomcat-9.0.98.tar.gz
 
 tar -zxvf apache-tomcat-9.0.98.tar.gz
 
@@ -15,4 +15,5 @@ sed -i '56d' apache-tomcat-9.0.98/conf/tomcat-users.xml
 sed -i '21d' apache-tomcat-9.0.98/webapps/manager/META-INF/context.xml
 sed -i '22d' apache-tomcat-9.0.98/webapps/manager/META-INF/context.xml
 
+chmod +x apache-tomcat-9.0.98/bin/*.sh
 sh apache-tomcat-9.0.98/bin/startup.sh
